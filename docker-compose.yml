@@ -1,0 +1,25 @@
+services:
+  api:
+    build:
+      context: ./API
+    container_name: ${API_HOST}
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    environment:
+      - OPENSEARCH_HOST=${OPENSEARCH_HOST}
+
+  opensearch-node:
+    image: opensearchproject/opensearch:2.11.1
+    container_name: "${OPENSEARCH_HOST}"
+    environment:
+      - discovery.type=single-node
+      - DISABLE_SECURITY_PLUGIN=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "${OPENSEARCH_PORT}:${OPENSEARCH_PORT}"
+      - "9600:9600"
+    volumes:
+      - data_volume:/usr/share/opensearch/data
+
+volumes:
+  data_volume:
