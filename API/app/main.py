@@ -5,25 +5,31 @@ from enum import Enum
 from opensearchpy import OpenSearch
 import os
 
-#connexion à OpenSearch
+#connexion à OpenSearch avec les variables d'environnement
 client = OpenSearch(
     hosts=[{'host': os.environ.get('OPENSEARCH_HOST'), 'port': os.environ.get('OPENSEARCH_PORT')}],
 )
 
 app= FastAPI()
 
+# Enum pour le "level" d'un log
 class LogLevel(str, Enum):
     INFO = "INFO"
     WARNING = "WARNING"
     ERROR = "ERROR"
     DEBUG = "DEBUG"
 
+# Modèle de données pour un log
 class Log(BaseModel):
     id : str = None
     message: str
-    timestamp: str # = datetime.now().isoformat()
+    timestamp: str
     level: LogLevel
     service: str
+class LogSearch(BaseModel):
+    q: str = None
+    level: LogLevel = None
+    service: str = None
 
 @app.get("/")
 def root():
@@ -32,13 +38,12 @@ def root():
 #Requête POST pour créer un log
 @app.post("/logs")
 def create_log(log: Log):
-
     #vérification du format de la date
     try:
         datetime.fromisoformat(log.timestamp)
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid timestamp format. Use ISO 8601 format.")
-    
+    #création du nom de l'index basé sur la date du jour
     index_name = f"logs-{datetime.now().strftime('%Y.%m.%d')}"
     # vérification de l'existence de l'index et création si nécessaire
     client.indices.exists(index=index_name) or client.indices.create(index=index_name)
@@ -53,13 +58,41 @@ def create_log(log: Log):
         },
         headers={"Content-Type": "application/json"}
     )
-
-    log.id = response['_id']
-       
-    
+    # récupération de l'ID du log indexé
+    log.id = response['_id']       
     return log
+#Requête GET pour chercher des logs
+@app.get("/logs/search")
+def search_logs(search_params: LogSearch):
+    #Récupération des données du JSON
+    q = search_params.q
+    level = search_params.level
+    service = search_params.service
+    # Construction de la requête de recherche
+    filters = []
+    if q :
+            filters.append({"match": {"message": q}})
+    if level :
+            filters.append({"term": {"level.keyword": level}})
+    if service:
+            filters.append({"term": {"service.keyword": service}})
 
-# @app.get("logs/search")
-# def search_logs(q: str = None, level: LogLevel = None, service: str = None):
-#     results = logs
+    query_body = {
+            "query": {
+                "bool": {
+                    "must": filters 
+                }
+            },
+            "sort": [
+                {"timestamp": {"order": "desc"}}
+            ]
+        }
+    
+    response = client.search(
+            index="logs-*",
+            body=query_body
+        )
+
+    return response['hits']['hits']
+
    
