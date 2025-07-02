@@ -26,6 +26,7 @@ class Log(BaseModel):
     timestamp: str
     level: LogLevel
     service: str
+# Modèle de données pour la recherche de logs
 class LogSearch(BaseModel):
     q: str = None
     level: LogLevel = None
@@ -87,7 +88,7 @@ def search_logs(search_params: LogSearch):
                 {"timestamp": {"order": "desc"}}
             ]
         }
-    
+
     response = client.search(
             index="logs-*",
             body=query_body
