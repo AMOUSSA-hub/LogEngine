@@ -26,6 +26,7 @@ class Log(BaseModel):
     timestamp: str
     level: LogLevel
     service: str
+    
 # Modèle de données pour la recherche de logs
 class LogSearch(BaseModel):
     q: str = None
@@ -62,6 +63,7 @@ def create_log(log: Log):
     # récupération de l'ID du log indexé
     log.id = response['_id']       
     return log
+
 #Requête GET pour chercher des logs
 @app.get("/logs/search")
 def search_logs(search_params: LogSearch):
