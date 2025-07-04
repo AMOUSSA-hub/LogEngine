@@ -78,15 +78,12 @@ def create_log(log: Log):
 
 #Requête GET pour chercher des logs
 @app.get("/logs/search")
-def search_logs(search_params: LogSearch):
-    #Récupération des données du JSON
-    q = search_params.q
-    level = search_params.level
-    service = search_params.service
+def search_logs(q: str = None, level: LogLevel = None, service: str = None):
+
     # Construction de la requête de recherche
     filters = []
     if q :
-            filters.append({"match": {"message": q}})
+            filters.append({"match_phrase_prefix": {"message": q}})
     if level :
             filters.append({"term": {"level.keyword": level}})
     if service:
