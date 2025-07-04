@@ -4,13 +4,25 @@ from pydantic import BaseModel
 from enum import Enum
 from opensearchpy import OpenSearch
 import os
+from fastapi.middleware.cors import CORSMiddleware
 
 #connexion à OpenSearch avec les variables d'environnement
 client = OpenSearch(
     hosts=[{'host': os.environ.get('OPENSEARCH_HOST'), 'port': os.environ.get('OPENSEARCH_PORT')}],
 )
 
-app= FastAPI()
+app = FastAPI()
+
+frontend_address = f"http://{os.environ.get('FRONTEND_HOST')}:{os.environ.get('FRONTEND_PORT')}"
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Enum pour le "level" d'un log
 class LogLevel(str, Enum):

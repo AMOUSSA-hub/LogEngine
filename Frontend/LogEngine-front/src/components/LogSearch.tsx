@@ -1,7 +1,14 @@
 function LogSearch() {
+
+  //const logs =[];
+
   return (
-   <>
-    <div>
+   
+    <div className="p-4  bg-white rounded-lg shadow-md dark:bg-gray-800">
+      <h2 className="text-2xl font-bold text-gray-900  dark:text-white">
+          Rechercher un log
+        </h2>
+      
         {/* Section pour rechercher des logs */}
         <div>
           <div className="mt-3">
@@ -178,7 +185,7 @@ function LogSearch() {
         </div>
       </div>
    
-   </>
+ 
   );
 }
 

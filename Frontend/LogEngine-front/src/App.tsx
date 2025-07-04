@@ -12,7 +12,7 @@ function App() {
         
         <img
           className="h-auto max-w-20"
-          src="./src/assets/LogEngine_logo.png"
+          src="LogEngine_logo.png"
           alt="image description"
         />
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">

@@ -2,7 +2,7 @@ services:
   frontend:
     build:
       context: ./Frontend/LogEngine-front
-    container_name: ${FRONTEND_HOST}
+    container_name: "${FRONTEND_HOST}"
     ports:
       - "${FRONTEND_PORT}:80"
     environment:
@@ -11,13 +11,15 @@ services:
   api:
     build:
       context: ./API
-    container_name: ${API_HOST}
+    container_name: "${API_HOST}"
     ports:
       - "${API_PORT}:${API_PORT}"
     environment:
       - OPENSEARCH_HOST=${OPENSEARCH_HOST}
       - OPENSEARCH_PORT=${OPENSEARCH_PORT}
       - API_PORT=${API_PORT}
+      - FRONTEND_HOST=${FRONTEND_HOST}
+      - FRONTEND_PORT=${FRONTEND_PORT}
   opensearch-node:
     image: opensearchproject/opensearch:2.11.1
     container_name: "${OPENSEARCH_HOST}"

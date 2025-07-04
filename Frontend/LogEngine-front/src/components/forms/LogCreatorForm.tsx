@@ -19,18 +19,18 @@ function LogCreatorForm() {
     // Vérifier si les champs sont remplis
     if( name_service && message && level !== "[niveau]") {
     
-    const  request_body = JSON.stringify({
-      service:name_service,
-      message: message,
-      level:level,
-      timestamp: new Date().toISOString()
-    });
-
-    
+    // Créer un le body( JSON) pour la requête avec les données du formulaire
+    const  request_body = {
+      "service":name_service,
+      "message": message,
+      "level":level,
+      "timestamp": new Date().toISOString()
+    };
+    //ENELEVER POUR LA FIN
     console.log(request_body);
 
 //Appeler l'API pour envoyer les données du formulaire
-      createLog(request_body);
+    createLog(request_body);
 
     form.reset();
     setError(""); 
