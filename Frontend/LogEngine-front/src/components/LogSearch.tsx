@@ -6,13 +6,41 @@ function LogSearch() {
   
   const [message, setMessage] = useState('');
   const [service, setService] = useState('');
+  const [level, setLevel] = useState('');
   const [logs, setLogs] = useState<any[]>([]);
 
+  // Surveille les valeurs des champs de recherche
+  
   useEffect(() => {
-    console.log("Composant LogSearch monté");
-    getLogs().then((data) => setLogs(data));
+   const logFilters = buildFilter()
+   if(logFilters != "?"){
+getLogs(logFilters).then((data) => setLogs(data));
+   }else{
+    getLogs('').then((data) => setLogs(data));
+   }
 
-  }, [message]);
+  }, [message,level,service]);
+
+  // Fonction qui assemble les filtres pour la requête GET
+  const buildFilter = () =>{
+    
+
+    let logFilter="?"
+
+    if (message.trim() !== ''){
+      logFilter = logFilter+"q="+message.trim()+"&"
+    }
+    if (service.trim() !== ''){
+      logFilter = logFilter+"service="+service.trim()
+    }
+
+     if (level != "[niveau]" && level != ""){
+      logFilter = logFilter+"&level="+level
+
+    }
+    return logFilter;
+    
+  }
 
   
 
@@ -27,10 +55,14 @@ function LogSearch() {
         <div>
           <div className="mt-3">
             <div className="flex  rounded-md bg-white pl-3 ">
+            {/* Sélection niveau */}
               <select
                 id="level"
                 name="niveau"
                 aria-label="level"
+                value={level}
+                onChange={(e) => setLevel(e.target.value)}
+                defaultValue="[niveau]"
                 className=" p-3 text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               >
                 <option>[niveau]</option>
@@ -40,27 +72,27 @@ function LogSearch() {
                 <option>ERROR</option>
               </select>
 
-              <div className="grid shrink-0 grid-cols-1 focus-within:relative">
-                <select
-                  id="service"
-                  name="service"
-                  aria-label="service"
-                  value={service}
+              
+                {/* Champs pour rechercher avec le nom du service. */}
+                <input
+                type="text"
+                name="service"
+                id="service"
+                value={service}
                 onChange={(e) => setService(e.target.value)}
-                  className="  text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                >
-                  <option>[service]</option>
-                  <option>api-gateway</option>
-                  <option>user-service</option>
-                </select>
-              </div>
+                className="grid shrink-0 grid-cols-1 pl-3 text-gray-900 border-x-1 border-x-gray-300 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
+                placeholder="nom du service..."
+              />      
+             
+              
+              {/* Champs pour rechercher avec le message du log. */}
               <input
                 type="text"
                 name="message"
                 id="msg"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
+                className="block min-w-0 grow py-1.5 pl-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
                 placeholder="message du log..."
               />
             </div>

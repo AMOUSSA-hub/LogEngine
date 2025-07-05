@@ -82,7 +82,7 @@ def search_logs(q: str = None, level: LogLevel = None, service: str = None):
     if level :
             filters.append({"term": {"level.keyword": level}})
     if service:
-            filters.append({"term": {"service.keyword": service}})
+            filters.append({"prefix": {"service": service}})
 
     query_body = {
             "query": {

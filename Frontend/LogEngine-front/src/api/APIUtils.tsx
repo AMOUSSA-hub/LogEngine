@@ -1,5 +1,5 @@
 import axios from "axios"; 
-
+// Fonction pour envoyer un log à l'API
 export const createLog = async (logData: any) => {
   const apiPort = import.meta.env.VITE_API_PORT;
   const url = `http://localhost:${apiPort}/logs`;
@@ -15,12 +15,13 @@ export const createLog = async (logData: any) => {
   }
 };
 
-
-export const getLogs = async () => {
+// Fonction pour rechercher les logs de l'API
+export const getLogs = async (logSearch : any) => {
   const apiPort = import.meta.env.VITE_API_PORT;
 
+
   try {
-    const response = await axios.get(`http://localhost:${apiPort}/logs/search?`);
+    const response = await axios.get(`http://localhost:${apiPort}/logs/search`+logSearch.toString());
     console.log("getLogs response:", response.data);
     const logs = response.data;
     return logs;
