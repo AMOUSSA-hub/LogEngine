@@ -1,6 +1,20 @@
+import { useEffect, useState } from "react";
+import { getLogs } from "../api/APIUtils";
 function LogSearch() {
 
-  //const logs =[];
+  
+  
+  const [message, setMessage] = useState('');
+  const [service, setService] = useState('');
+  const [logs, setLogs] = useState<any[]>([]);
+
+  useEffect(() => {
+    console.log("Composant LogSearch monté");
+    getLogs().then((data) => setLogs(data));
+
+  }, [message]);
+
+  
 
   return (
    
@@ -20,7 +34,6 @@ function LogSearch() {
                 className=" p-3 text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               >
                 <option>[niveau]</option>
-                <option> </option>
                 <option>INFO</option>
                 <option>WARNING</option>
                 <option>DEBUG</option>
@@ -32,10 +45,11 @@ function LogSearch() {
                   id="service"
                   name="service"
                   aria-label="service"
-                  className="  rounded-md pr-7 pl-3  text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  value={service}
+                onChange={(e) => setService(e.target.value)}
+                  className="  text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 >
                   <option>[service]</option>
-                  <option> </option>
                   <option>api-gateway</option>
                   <option>user-service</option>
                 </select>
@@ -44,6 +58,8 @@ function LogSearch() {
                 type="text"
                 name="message"
                 id="msg"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 className="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
                 placeholder="message du log..."
               />
@@ -124,62 +140,34 @@ function LogSearch() {
               </tr>
             </thead>
             <tbody className=" h-50">
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+              
+               {logs.map((log, index) => (
+    <tr
+      key={index}
+      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+    >
+      <th className="px-6 py-4">{log["_source"].level}</th>
+      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+        {log["_source"].service}
+      </td>
+      <td className="px-6 py-4">{log["_source"].message}</td>
+      <td className="px-6 py-4">
+        {log["_source"].timestamp}
+      </td>
+    </tr>
+  ))}
+              
+              
+              {/* <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                 <th className="px-6 py-4 ">INFO</th>
                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   api-gateway
                 </td>
                 <td className="px-6 py-4">User created successfully</td>
                 <td className="px-6 py-4">2023-10-01 12:00:00</td>
-              </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                <th className="px-6 py-4 ">INFO</th>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  api-gateway
-                </td>
-                <td className="px-6 py-4">User created successfully</td>
-                <td className="px-6 py-4">2023-10-01 12:00:00</td>
-              </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                <th className="px-6 py-4 ">INFO</th>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  api-gateway
-                </td>
-                <td className="px-6 py-4">User created successfully</td>
-                <td className="px-6 py-4">2023-10-01 12:00:00</td>
-              </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                <th className="px-6 py-4 ">INFO</th>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  api-gateway
-                </td>
-                <td className="px-6 py-4">User created successfully</td>
-                <td className="px-6 py-4">2023-10-01 12:00:00</td>
-              </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                <th className="px-6 py-4 ">INFO</th>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  api-gateway
-                </td>
-                <td className="px-6 py-4">User created successfully</td>
-                <td className="px-6 py-4">2023-10-01 12:00:00</td>
-              </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                <th className="px-6 py-4 ">INFO</th>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  api-gateway
-                </td>
-                <td className="px-6 py-4">User created successfully</td>
-                <td className="px-6 py-4">2023-10-01 12:00:00</td>
-              </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                <th className="px-6 py-4 ">INFO</th>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  api-gateway
-                </td>
-                <td className="px-6 py-4">User created successfully</td>
-                <td className="px-6 py-4">2023-10-01 12:00:00</td>
-              </tr>
+              </tr> */}
+
+
             </tbody>
           </table>
         </div>

@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { createLog } from "../api/APIUtils";
+import { createLog } from "../../api/APIUtils";
 
 
 function LogCreatorForm() {

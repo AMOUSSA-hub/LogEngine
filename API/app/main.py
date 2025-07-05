@@ -39,11 +39,6 @@ class Log(BaseModel):
     level: LogLevel
     service: str
     
-# Modèle de données pour la recherche de logs
-class LogSearch(BaseModel):
-    q: str = None
-    level: LogLevel = None
-    service: str = None
 
 @app.get("/")
 def root():
