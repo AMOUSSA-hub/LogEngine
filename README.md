@@ -56,7 +56,6 @@ Cela éteint proprement tous les services.
 📌 Remarque finale
 
 Si vous rencontrez des erreurs de connexion entre les services, vérifiez :
-
 - Que tous les fichiers .env sont correctement remplis
 - Que les noms des hôtes dans vos variables pointent bien vers api, frontend, ou opensearch-node
 
