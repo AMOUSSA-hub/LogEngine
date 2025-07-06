@@ -18,7 +18,6 @@ Avant de lancer l'application, vous devez **créer les fichiers `.env` nécessai
 > - `frontend`
 > - `opensearch-node`
 
----
 
 ### 2. 📁 Se placer à la racine du projet
 
@@ -27,7 +26,7 @@ Assurez-vous d’être dans le dossier contenant le fichier `docker-compose.yml`
 ```bash
 cd ./LogEngine
 ```
-3. 🧱 Lancer les services Docker
+### 3. 🧱 Lancer les services Docker
 
 Utilisez la commande suivante pour construire et démarrer tous les services :
 
@@ -40,7 +39,7 @@ Docker va :
     Démarrer les conteneurs de l'API, du frontend, et d'OpenSearch
     
 
-4. 🌐 Accéder à l'application
+### 4. 🌐 Accéder à l'application
 
 Une fois les services démarrés, ouvrez votre navigateur à l’adresse suivante :
 
@@ -48,7 +47,7 @@ http://localhost:${FRONTEND_PORT}
 
     Remplacez ${FRONTEND_PORT} par la valeur que vous avez définie dans le fichier .env à la racine.
 
-5. 🛑 Arrêter l'application
+### 5. 🛑 Arrêter l'application
 
 Quand vous avez terminé, n’oubliez pas d’arrêter et nettoyer les conteneurs Docker avec :
 
