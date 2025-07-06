@@ -34,18 +34,17 @@ sudo docker compose up --build
 
 Docker va :
 
-    Construire les images nécessaires
-
-    Démarrer les conteneurs de l'API, du frontend, et d'OpenSearch
+- Construire les images nécessaires
+- Démarrer les conteneurs de l'API, du frontend, et d'OpenSearch
     
 
 ### 4. 🌐 Accéder à l'application
 
 Une fois les services démarrés, ouvrez votre navigateur à l’adresse suivante :
 
-http://localhost:${FRONTEND_PORT}
+    http://localhost:${FRONTEND_PORT}
 
-    Remplacez ${FRONTEND_PORT} par la valeur que vous avez définie dans le fichier .env à la racine.
+Remplacez ${FRONTEND_PORT} par la valeur que vous avez définie dans le fichier .env à la racine.
 
 ### 5. 🛑 Arrêter l'application
 
@@ -58,8 +57,7 @@ Cela éteint proprement tous les services.
 
 Si vous rencontrez des erreurs de connexion entre les services, vérifiez :
 
-    Que tous les fichiers .env sont correctement remplis
-
-    Que les noms des hôtes dans vos variables pointent bien vers api, frontend, ou opensearch-node
+- Que tous les fichiers .env sont correctement remplis
+- Que les noms des hôtes dans vos variables pointent bien vers api, frontend, ou opensearch-node
 
 
