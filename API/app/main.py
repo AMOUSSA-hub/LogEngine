@@ -99,7 +99,7 @@ async def create_log(log: Log):
 
 #Requête GET pour chercher des logs
 @app.get("/logs/search")
-def  search_logs(q: str = None, level: LogLevel = None, service: str = None):
+def  search_logs(q: str = None, level: LogLevel = None, service: str = None,p: int = None):
 
     # Construction de la requête de recherche
     filters = []
@@ -109,6 +109,8 @@ def  search_logs(q: str = None, level: LogLevel = None, service: str = None):
             filters.append({"term": {"level.keyword": level}})
     if service:
             filters.append({"prefix": {"service": service}})
+
+    
 
     query_body = {
             "query": {
@@ -120,6 +122,9 @@ def  search_logs(q: str = None, level: LogLevel = None, service: str = None):
                 {"timestamp": {"order": "desc"}}
             ]
         }
+    
+    if p is not None:
+         query_body["search_after"] = [p]
 
     response = client.search(
             index="logs-*",

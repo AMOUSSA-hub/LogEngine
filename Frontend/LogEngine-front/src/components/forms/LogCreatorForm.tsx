@@ -30,7 +30,7 @@ export default function LogCreatorForm() {
       "timestamp": new Date().toISOString()
     };
     //ENELEVER POUR LA FIN
-    console.log(request_body);
+    console.log("JSON envoyés:"+request_body);
 
 //Appeler l'API pour envoyer les données du formulaire
     createLog(request_body);

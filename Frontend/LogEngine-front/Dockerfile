@@ -7,6 +7,7 @@ RUN npm run build
 
 FROM nginx:1.29.0-alpine AS runner
 COPY --from=builder /app/dist /usr/share/nginx/html
-#COPY app.conf /etc/nginx/conf.d/app.conf // COnfiguration de reverse proxy pour essayer de contourner le problème de CORS
+#Configuration de reverse proxy pour essayer de contourner le problème de CORS
+#COPY app.conf /etc/nginx/conf.d/app.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
