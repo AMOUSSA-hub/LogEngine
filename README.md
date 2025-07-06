@@ -29,9 +29,9 @@ cd ./LogEngine
 ### 3. 🧱 Lancer les services Docker
 
 Utilisez la commande suivante pour construire et démarrer tous les services :
-
-sudo docker compose up --build
-
+```bash
+sudo docker compose up --build -d
+```
 Docker va :
 
 - Construire les images nécessaires
@@ -50,13 +50,8 @@ Remplacez ${FRONTEND_PORT} par la valeur que vous avez définie dans le fichier 
 
 Quand vous avez terminé, n’oubliez pas d’arrêter et nettoyer les conteneurs Docker avec :
 
-sudo docker compose down
-
-Cela éteint proprement tous les services.
-📌 Remarque finale
-
-Si vous rencontrez des erreurs de connexion entre les services, vérifiez :
-- Que tous les fichiers .env sont correctement remplis
-- Que les noms des hôtes dans vos variables pointent bien vers api, frontend, ou opensearch-node
-
+```bash
+sudo docker compose stop
+```
+Cela éteint tous les services.
 
