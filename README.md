@@ -51,7 +51,7 @@ Remplacez ${FRONTEND_PORT} par la valeur que vous avez définie dans le fichier 
 Quand vous avez terminé, n’oubliez pas d’arrêter et nettoyer les conteneurs Docker avec :
 
 
-sudo docker compose stop
+    sudo docker compose stop
 
 Cela éteint tous les services.
 
