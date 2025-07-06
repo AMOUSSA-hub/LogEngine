@@ -23,14 +23,14 @@ Avant de lancer l'application, vous devez **créer les fichiers `.env` nécessai
 
 Assurez-vous d’être dans le dossier contenant le fichier `docker-compose.yml` :
 
-```bash
-cd ./LogEngine
-```
+
+    cd ./LogEngine
+
 ### 3. 🧱 Lancer les services Docker
 
 Utilisez la commande suivante pour construire et démarrer tous les services :
 ```bash
-sudo docker compose up --build -d
+    sudo docker compose up --build -d
 ```
 Docker va :
 
