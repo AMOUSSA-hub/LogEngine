@@ -1,13 +1,19 @@
 import axios from "axios"; 
-// Fonction pour envoyer un log à l'API
+
+/**
+ * Fonction pour envoyer un log à l'API.
+ * @param logData 
+ * @returns response
+ */
 export const createLog = async (logData: any) => {
   const apiPort = import.meta.env.VITE_API_PORT;
   const url = `http://localhost:${apiPort}/logs`;
 
   try {
     const response = await axios.post(url, logData);
+    alert("log créé avec succès !")
     console.log("Log créé :", response.data);
-    return response.data; // retourne les données utiles
+    return response.data;
   } catch (error: any) {
     console.error("Erreur lors de la création du log :", error.message);
     alert("Erreur lors de la création du log : " + error.message);
@@ -15,7 +21,12 @@ export const createLog = async (logData: any) => {
   }
 };
 
-// Fonction pour rechercher les logs de l'API
+
+/**
+ * Fonction de recherche de log avec l'API.
+ * @param logSearch 
+ * @returns logs
+ */
 export const getLogs = async (logSearch : any) => {
   const apiPort = import.meta.env.VITE_API_PORT;
 

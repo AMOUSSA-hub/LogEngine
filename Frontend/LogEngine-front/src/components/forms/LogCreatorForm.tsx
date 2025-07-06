@@ -1,8 +1,11 @@
 import { useState, type FormEvent } from "react";
 import { createLog } from "../../api/APIUtils";
 
-
-function LogCreatorForm() {
+/**
+ * Composant représentant la section "Créer un log".
+ * @returns 
+ */
+export default function LogCreatorForm() {
 
   const [error, setError] = useState("");
   
@@ -92,4 +95,3 @@ function LogCreatorForm() {
   );
 }
 
-export default LogCreatorForm;

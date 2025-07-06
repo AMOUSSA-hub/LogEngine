@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, WebSocket,WebSocketDisconnect
 from datetime import datetime
 from pydantic import BaseModel
 from enum import Enum
@@ -38,7 +38,27 @@ class Log(BaseModel):
     timestamp: str
     level: LogLevel
     service: str
-    
+#Gestion des différents sockets connecté à l'API
+class ConnectionManager:
+    #inti
+    def __init__(self):
+        self.active_connections:list[WebSocket] = []
+
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections.append(websocket)
+
+    def disconnect(self, websocket: WebSocket):
+        self.active_connections.remove(websocket)
+
+    async def broadcast(self, message: str):
+        for connection in self.active_connections:
+            try:
+                await connection.send_text(message)
+            except:
+                pass  
+
+manager = ConnectionManager()    
 
 @app.get("/")
 def root():
@@ -46,7 +66,7 @@ def root():
 
 #Requête POST pour créer un log
 @app.post("/logs")
-def create_log(log: Log):
+async def create_log(log: Log):
     #vérification du format de la date
     try:
         datetime.fromisoformat(log.timestamp)
@@ -63,17 +83,23 @@ def create_log(log: Log):
             "message": log.message,
             "timestamp": log.timestamp,
             "level": log.level,
-            "service": log.service
+            "service": log.service,
+            
         },
-        headers={"Content-Type": "application/json"}
+        headers={"Content-Type": "application/json"},
+        refresh = True       
     )
+    
     # récupération de l'ID du log indexé
-    log.id = response['_id']       
+    log.id = response['_id'] 
+    #Notifier les clients connectés à l'API
+    await manager.broadcast("Nouveau Log Crée !")  
+
     return log
 
 #Requête GET pour chercher des logs
 @app.get("/logs/search")
-def search_logs(q: str = None, level: LogLevel = None, service: str = None):
+def  search_logs(q: str = None, level: LogLevel = None, service: str = None):
 
     # Construction de la requête de recherche
     filters = []
@@ -97,9 +123,22 @@ def search_logs(q: str = None, level: LogLevel = None, service: str = None):
 
     response = client.search(
             index="logs-*",
-            body=query_body
+            body=query_body,
+            size= 20
         )
 
     return response['hits']['hits']
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+     await manager.connect(websocket)
+     try:
+        while True:
+            await websocket.receive_text()  # Optionnel, ici on ne traite pas les messages entrants
+     except WebSocketDisconnect:
+        manager.disconnect(websocket)
+        
+
+
 
    
